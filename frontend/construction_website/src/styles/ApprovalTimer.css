@@ -1,0 +1,108 @@
+.approval-timer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+.timer-container {
+  position: relative;
+  margin-bottom: 1.5rem;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timer-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  transition: opacity 0.3s ease-out;
+}
+
+.time-left {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2196f3;
+}
+
+.seconds {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.progress {
+  color: #2196f3;
+  transition: color 0.3s ease-out;
+}
+
+.progress.success {
+  color: #4caf50;
+}
+
+.error-message {
+  color: #f44336;
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #ffebee;
+  border-radius: 4px;
+  width: 100%;
+  text-align: center;
+}
+
+.approval-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.success-icon {
+  width: 60px;
+  height: 60px;
+  background: #4caf50;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  animation: scaleIn 0.3s ease-out;
+}
+
+.success-message {
+  color: #4caf50;
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+.success-text {
+  color: #4caf50;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}

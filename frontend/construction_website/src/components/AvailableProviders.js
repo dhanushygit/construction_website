@@ -2,15 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Star, DollarSign, Clock } from 'lucide-react';
 import axios from 'axios';
-import PaymentModal from './PaymentModal';
+import PaymentGateway from './PaymentGateway';
+import BookingSuccess from './BookingSuccess';
 import '../styles/AvailableProviders.css';
 
 const AvailableProvidersContainer = () => {
   const [workers, setWorkers] = useState([]);
   const [selectedWorker, setSelectedWorker] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [showPayment, setShowPayment] = useState(false);
   const [currentBookingId, setCurrentBookingId] = useState(null);
+  const [bookingStep, setBookingStep] = useState('initial'); // initial, payment, success
   const [error, setError] = useState('');
   const location = useLocation();
   const navigate = useNavigate();
@@ -31,7 +32,6 @@ const AvailableProvidersContainer = () => {
       setLoading(true);
       setError('');
       
-      // Fetch workers filtered by service type and date
       const response = await axios.get(`http://127.0.0.1:8000/api/available-providers/`, {
         params: {
           service: serviceName,
@@ -39,7 +39,6 @@ const AvailableProvidersContainer = () => {
         }
       });
       
-      // Additional client-side filtering to ensure exact service type match
       const filteredWorkers = response.data.filter(worker => 
         worker.skill && worker.skill.toLowerCase().trim() === serviceName.toLowerCase().trim()
       );
@@ -59,7 +58,10 @@ const AvailableProvidersContainer = () => {
         throw new Error('Invalid worker data');
       }
 
-      // Create the booking
+      setSelectedWorker(worker);
+      setBookingStep('payment');
+
+      // Create initial booking record
       const bookingResponse = await axios.post('http://127.0.0.1:8000/api/bookings/', {
         customer_name: bookingDetails.name || '',
         customer_email: bookingDetails.email || '',
@@ -71,32 +73,75 @@ const AvailableProvidersContainer = () => {
       });
 
       setCurrentBookingId(bookingResponse.data.id);
-      setSelectedWorker(worker);
-      setShowPayment(true);
     } catch (error) {
       console.error('Error creating booking:', error);
-      alert('Failed to create booking. Please try again.');
+      setError('Failed to create booking. Please try again.');
+      setBookingStep('initial');
     }
   };
 
   const handlePaymentComplete = async () => {
     try {
-      // Update booking status to indicate payment completed
+      // Update booking status to confirmed after payment
       await axios.patch(`http://127.0.0.1:8000/api/bookings/${currentBookingId}/`, {
+        status: 'CONFIRMED',
         payment_status: 'COMPLETED'
       });
-
-      // Navigate to booking status page
-      navigate('/booking-status', { 
-        state: { 
-          bookingId: currentBookingId,
-          workerName: selectedWorker.name,
-          serviceName: serviceName
-        }
-      });
+      setBookingStep('success');
     } catch (error) {
       console.error('Error updating booking status:', error);
-      alert('Payment recorded but there was an error updating the booking. Please contact support.');
+      setError('Payment recorded but there was an error updating the booking. Please contact support.');
+    }
+  };
+
+  const handlePaymentCancel = async () => {
+    try {
+      // Delete the pending booking if user cancels
+      if (currentBookingId) {
+        await axios.delete(`http://127.0.0.1:8000/api/bookings/${currentBookingId}/`);
+      }
+    } catch (error) {
+      console.error('Error deleting pending booking:', error);
+    }
+    setBookingStep('initial');
+    setCurrentBookingId(null);
+    setSelectedWorker(null);
+  };
+
+  const handleSuccessComplete = () => {
+    navigate('/bookings', { 
+      state: { 
+        bookingId: currentBookingId,
+        workerName: selectedWorker.name,
+        serviceName: serviceName
+      }
+    });
+  };
+
+  const renderBookingStep = () => {
+    switch (bookingStep) {
+      case 'payment':
+        return (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <PaymentGateway
+                amount={selectedWorker.hourly_rate * 2} // 2 hours minimum
+                onPaymentComplete={handlePaymentComplete}
+                onClose={handlePaymentCancel}
+              />
+            </div>
+          </div>
+        );
+      case 'success':
+        return (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <BookingSuccess onAnimationComplete={handleSuccessComplete} />
+            </div>
+          </div>
+        );
+      default:
+        return null;
     }
   };
 
@@ -113,15 +158,6 @@ const AvailableProvidersContainer = () => {
       <div className="error-container">
         <div className="error">{error}</div>
         <button onClick={() => navigate(-1)} className="back-button">Go Back</button>
-      </div>
-    );
-  }
-
-  if (!serviceName || !bookingDetails) {
-    return (
-      <div className="error-container">
-        <div className="error">Invalid booking request. Please start over.</div>
-        <button onClick={() => navigate('/')} className="back-button">Go to Home</button>
       </div>
     );
   }
@@ -171,8 +207,9 @@ const AvailableProvidersContainer = () => {
                   <span>${worker.hourly_rate || 0}/hour</span>
                 </div>
                 <button 
-                  className="book-button"
                   onClick={() => handleBooking(worker)}
+                  className="book-button"
+                  disabled={bookingStep !== 'initial'}
                 >
                   Book Now
                 </button>
@@ -182,23 +219,11 @@ const AvailableProvidersContainer = () => {
         ) : (
           <div className="no-providers">
             <p>No service providers available for the selected date and service.</p>
-            <button onClick={() => navigate(-1)} className="back-button">
-              Go Back
-            </button>
           </div>
         )}
       </div>
 
-      {showPayment && selectedWorker && (
-        <PaymentModal
-          isOpen={showPayment}
-          onClose={() => setShowPayment(false)}
-          onComplete={handlePaymentComplete}
-          amount={selectedWorker.hourly_rate || 0}
-          workerName={selectedWorker.name}
-          serviceName={serviceName}
-        />
-      )}
+      {renderBookingStep()}
     </div>
   );
 };
