@@ -1,0 +1,89 @@
+/* Container for the signup form */
+.sbody{
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.signup-container {
+    background-color: white;
+    padding: 40px;
+    max-width: 600px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Header styling */
+  .signup-header {
+    text-align: center;
+    color: #3b82f6;
+    margin-bottom: 20px;
+  }
+  
+  /* Form group styling */
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  /* Label styling */
+  .form-label {
+    margin-top: 2%;
+    display: block;
+    color: #3b82f6;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  /* Input field styling */
+  .form-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+  
+  /* Button styling */
+  .form-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Button hover effect */
+  .form-button:hover {
+    background-color: #1e60d4;
+  }
+  
+  /* Link styling */
+  .form-link {
+    color: #3b82f6;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    text-decoration: underline;
+  }
+  
+  /* Link hover effect */
+  .form-link:hover {
+    color: #1e60d4;
+   
+  }
+  
+  /* Message styling */
+  .message {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 16px;
+  }
+  

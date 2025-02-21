@@ -1,0 +1,107 @@
+/* Projects.css */
+
+#projects {
+    padding: 3rem 0;
+    background-color: #f7fafc; /* Light gray background */
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  
+  h2 {
+    font-size: 2.25rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #2d3748; /* Darker text for headings */
+  }
+  
+  .grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+  
+  @media (min-width: 640px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr); /* Two columns on small screens */
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .grid {
+      grid-template-columns: repeat(4, 1fr); /* Four columns on larger screens */
+    }
+  }
+  
+  .bg-white {
+    background-color: #ffffff;
+  }
+  
+  .shadow-lg {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .rounded-lg {
+    border-radius: 0.5rem;
+  }
+  
+  .overflow-hidden {
+    overflow: hidden;
+  }
+  
+  .w-full {
+    width: 100%;
+  }
+  
+  .h-48 {
+    height: 12rem;
+  }
+  
+  .object-cover {
+    object-fit: cover;
+  }
+  
+  .p-4 {
+    padding: 1rem;
+  }
+  
+  .text-sm {
+    font-size: 0.875rem;
+    color: #4a5568; /* Gray for category text */
+  }
+  
+  .text-gray-500 {
+    color: #a0aec0; /* Light gray text */
+  }
+  
+  .text-gray-600 {
+    color: #718096; /* Slightly darker gray */
+  }
+  
+  .text-lg {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #2d3748; /* Darker text for project titles */
+  }
+  
+  .mt-1 {
+    margin-top: 0.25rem;
+  }
+  
+  .mt-2 {
+    margin-top: 0.5rem;
+  }
+  
+  .mt-4 {
+    margin-top: 1rem;
+  }
+  
+  @media (min-width: 768px) {
+    .h-48 {
+      height: 200px; /* Adjust height for medium screens */
+    }
+  }
+  
