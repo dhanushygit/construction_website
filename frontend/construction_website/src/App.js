@@ -8,7 +8,7 @@ import Homepage from './Homepage';
 import AdminDashboard from '../src/components/AdminDashboard';
 import AvailableProviders from '../src/components/AvailableProviders';
 import BookingStatus from '../src/components/BookingStatus';
-
+import BookingSuccess from './components/BookingSuccess';
 const App = () => {
   return (
     <Router>
@@ -21,6 +21,7 @@ const App = () => {
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/available-providers" element={<AvailableProviders />} />
         <Route path="/booking-status" element={<BookingStatus />} />
+        <Route path="/booking-success" element={<BookingSuccess />} />
       </Routes>
     </Router>
   );

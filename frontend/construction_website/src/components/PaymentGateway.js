@@ -20,7 +20,6 @@ const PaymentGateway = ({ onPaymentComplete, onClose }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showTestCredentials, setShowTestCredentials] = useState(false);
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     let formattedValue = value;
